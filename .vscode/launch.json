@@ -1,0 +1,4 @@
+{
+  "version": "0.2.0",
+  "configurations": [{"name": "red_rider — Frontend + Backend", "type": "debugpy", "request": "launch", "module": "uvicorn", "args": ["app.main:app", "--host", "127.0.0.1", "--port", "8000"], "cwd": "${workspaceFolder}", "console": "integratedTerminal"}]
+}

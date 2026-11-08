@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QACore AI — Contact Center Quality & Appeal Intelligence</title>
+  <link rel="stylesheet" href="/static/qacore.css">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark .custom-scroll::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+    @keyframes pulseHighlight {
+      0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.75); transform: scale(1.01); }
+      50% { box-shadow: 0 0 0 8px rgba(234, 179, 8, 0); transform: scale(1.01); }
+      100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); transform: scale(1); }
+    }
+    .utterance-highlight {
+      animation: pulseHighlight 1.6s ease-out 2;
+      background-color: #fef9c3 !important;
+      border-color: #eab308 !important;
+    }
+    .dark .utterance-highlight {
+      background-color: rgba(234, 179, 8, 0.22) !important;
+      border-color: #facc15 !important;
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col overflow-hidden select-none sm:select-auto">
+
+  <!-- Top Navigation Header -->
+  <header class="bg-slate-900 text-white border-b border-slate-800 px-4 lg:px-6 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0 z-20">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shadow-md shadow-indigo-500/20">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-base tracking-tight">QACore AI</span>
+          <span class="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30" id="hdr-badge">8 Criteria Engine</span>
+        </div>
+        <p class="text-xs text-slate-400 hidden sm:block" id="hdr-subtitle">Оператор диалогтарын автоматты бағалау, дәлелдеу және апелляция жүйесі</p>
+      </div>
+    </div>
+
+    <!-- Main View Switcher Tabs -->
+    <nav class="flex items-center bg-slate-800/90 p-1 rounded-xl border border-slate-700/70">
+      <button id="nav-workspace" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        <span id="tab-label-workspace">Диалогтар және Бағалау</span>
+      </button>
+      <button id="nav-checklist" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        <span id="tab-label-checklist">Чек-лист (8 критерий)</span>
+      </button>
+      <button id="nav-export" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span id="tab-label-export">JSON Тексеру & Экспорт</span>
+      </button>
+    </nav>
+
+    <!-- Right Controls: KPI Summary, Language Switcher (KZ/RU/EN), Theme Toggle -->
+    <div class="flex items-center gap-2.5">
+      <div class="hidden xl:flex items-center gap-3 bg-slate-800/60 border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs">
+        <div>
+          <span class="text-slate-400" id="kpi-avg-label">Орт. балл:</span>
+          <strong class="text-emerald-400 ml-1" id="kpi-avg-val">—</strong>
+        </div>
+        <span class="text-slate-700">|</span>
+        <div>
+          <span class="text-slate-400" id="kpi-appeals-label">Апелляция:</span>
+          <strong class="text-amber-400 ml-1" id="kpi-appeals-val">0</strong>
+        </div>
+      </div>
+
+      <!-- 3-Language Switcher -->
+      <div class="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700" role="group" aria-label="Language Switcher">
+        <button id="lang-btn-kz" class="px-2.5 py-1 rounded-md text-xs font-bold transition-all text-slate-300 hover:text-white">KZ</button>
+        <button id="lang-btn-ru" class="px-2.5 py-1 rounded-md text-xs font-bold transition-all text-slate-300 hover:text-white">RU</button>
+        <button id="lang-btn-en" class="px-2.5 py-1 rounded-md text-xs font-bold transition-all text-slate-300 hover:text-white">EN</button>
+      </div>
+
+      <!-- Dark/Light Mode Toggle -->
+      <button id="theme-toggle-btn" class="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors" title="Theme">
+        <svg id="theme-icon-sun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+        <svg id="theme-icon-moon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      </button>
+    </div>
+  </header><div class="qa-toolbar"><span id="connection-status" class="qa-meta" role="status">Подключение…</span><label>Чек-лист<select id="active-checklist" aria-label="Чек-лист для оценки"></select></label><div class="qa-actions"><button id="btn-demo" type="button" data-action="demo" class="qa-button">Демо</button><button id="btn-import" type="button" data-action="import" class="qa-button">Импорт JSON</button><button id="btn-fetch" type="button" data-action="fetch" class="qa-button qa-primary">Загрузить из API</button><button id="btn-settings" type="button" data-action="settings" class="qa-button">Подключения</button></div></div><div id="global-demo"></div>
+
+  <!-- Toast Notification Banner -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- VIEW 1: DIALOGS & EVALUATION WORKSPACE -->
+  <main id="view-workspace" class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+    <!-- Left Sidebar: Dialog List & Filters -->
+    <aside class="w-full lg:w-80 xl:w-96 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col shrink-0 max-h-64 lg:max-h-none">
+      <div class="p-3.5 border-b border-slate-200 dark:border-slate-800 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400" id="sidebar-title">Диалогтар тізімі</h2>
+          <button id="btn-evaluate-all" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950/70 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/70 transition-colors">
+            ⚡ <span id="lbl-eval-all">Күтілудегіні бағалау</span>
+          </button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative">
+          <input id="filter-search" type="text" placeholder="ID, оператор немесе мәтін..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <!-- Filters Row -->
+        <div class="grid grid-cols-3 gap-1.5">
+          <select id="filter-dataset" class="text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 py-1.5 font-medium">
+            <option value="all" id="opt-ds-all">Барлық жиынтық</option>
+            <option value="dev">DEV (Чат+Қоңырау)</option>
+            <option value="prod">PROD (Бақылау)</option>
+          </select>
+          <select id="filter-lang" class="text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 py-1.5 font-medium">
+            <option value="all" id="opt-lang-all">Барлық тіл</option>
+            <option value="KZ">KZ (Қазақша)</option>
+            <option value="RU">RU (Русский)</option>
+            <option value="EN">EN (English)</option>
+          </select>
+          <select id="filter-status" class="text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 py-1.5 font-medium">
+            <option value="all" id="opt-st-all">Барлық статус</option>
+            <option value="evaluated" id="opt-st-eval">Бағаланды</option>
+            <option value="pending" id="opt-st-pend">Күтілуде</option>
+            <option value="error" id="opt-st-err">Қате</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Scrollable Dialog Items -->
+      <div id="dialog-list-container" class="flex-1 overflow-y-auto custom-scroll p-2.5 space-y-2"></div>
+    </aside>
+
+    <!-- Right Main Dialog Card & Evaluation Area -->
+    <section id="dialog-detail-container" class="flex-1 flex flex-col overflow-hidden bg-slate-50 dark:bg-slate-950"></section>
+  </main>
+
+  <!-- VIEW 2: CHECKLIST CONFIGURATOR (8 CRITERIA) -->
+  <main id="view-checklist" class="hidden flex-1 overflow-y-auto custom-scroll p-4 lg:p-6">
+    <div class="max-w-6xl mx-auto space-y-5">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold tracking-tight" id="chk-heading">8 критерий чек-листін баптау</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" id="chk-subheading">
+            Критерий атауын, салмағын (%), жауап түрін (Бинарлы / Шкала), максималды балды және N/A мүмкіндігін өзгертіңіз. N/A белгіленген критерийлердің салмағы қалған белсенді критерийлерге пропорционалды бөлінеді.
+          </p>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <button id="btn-normalize-weights" class="px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            ⚖️ <span id="lbl-normalize">100%-ға теңестіру</span>
+          </button>
+          <button id="btn-reset-checklist" class="px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            ↺ <span id="lbl-reset-chk">Бастапқы қалпына келтіру</span>
+          </button>
+          <button id="btn-save-checklist" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition-colors">
+            💾 <span id="lbl-save-chk">Сақтау және балдарды қайта есептеу</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="qa-config-heading"><label>Сохранённый чек-лист<select id="checklist-select" aria-label="Сохранённый чек-лист"></select></label><label>Название чек-листа<input id="checklist-name" required></label><label>Идентификатор<input id="checklist-id" required pattern="[A-Za-z0-9_-]+"></label><div class="qa-actions"><button id="btn-new-checklist" type="button" data-action="new-checklist" class="qa-button">Новый чек-лист</button><button id="btn-add-criterion" type="button" data-action="add-criterion" class="qa-button qa-primary">Добавить критерий</button></div></div><!-- Weight Progress Bar -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+          <span id="lbl-weight-sum-title">Базалық салмақтардың қосындысы:</span>
+          <span id="chk-total-weight-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">100.0%</span>
+        </div>
+        <div class="w-full h-3 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden flex" id="chk-weight-bar"></div>
+      </div>
+
+      <!-- Criteria Table -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 uppercase font-bold">
+                <th class="py-3 px-4 w-16">#</th>
+                <th class="py-3 px-4" id="th-crit-title">Критерий атауы (Ағымдағы тілде)</th>
+                <th class="py-3 px-4 w-36" id="th-crit-weight">Салмағы (%)</th>
+                <th class="py-3 px-4 w-44" id="th-crit-type">Жауап түрі</th>
+                <th class="py-3 px-4 w-36" id="th-crit-scale">Макс. шкала</th>
+                <th class="py-3 px-4 w-36 text-center" id="th-crit-na">N/A рұқсат па?</th><th class="py-3 px-4"></th>
+              </tr>
+            </thead>
+            <tbody id="checklist-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 3: JSON VALIDATION & SUBMISSION HUB -->
+  <main id="view-export" class="hidden flex-1 overflow-y-auto custom-scroll p-4 lg:p-6">
+    <div class="max-w-6xl mx-auto space-y-5">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold tracking-tight" id="exp-heading">Тапсыру алдындағы JSON валидациясы және Экспорт</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" id="exp-subheading">
+            results/dev/results.json (60 чат + 5 қоңырау) және results/prod/results.json (10 бақылау чаты, оның ішінде қате күйіндегілер) файлдарының толықтығы мен бірегейлігін тексеру.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button id="btn-run-validation" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition-colors">
+            ✓ <span id="lbl-run-val">Толық валидацияны іске қосу</span>
+          </button>
+          <button id="btn-download-dev" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition-colors">
+            ⬇ results/dev/results.json (65)
+          </button>
+          <button id="btn-download-prod" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-colors">
+            ⬇ results/prod/results.json (10)
+          </button>
+        </div>
+      </div>
+
+      <!-- Validation Scorecard Grid -->
+      <div id="validation-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+      <!-- Live JSON Preview -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-bold" id="lbl-json-preview">Таңдалған диалогтың толық JSON экспорт үлгісі (Транскрипт → Бағалау → Дәлелдер → Апелляция → Жаңа нәтиже)</h3>
+          <button id="btn-copy-json" class="px-3 py-1 rounded-lg text-xs font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
+            📋 <span id="lbl-copy-json">JSON көшіру</span>
+          </button>
+        </div>
+        <pre id="json-preview-box" class="bg-slate-950 text-emerald-400 p-4 rounded-xl text-xs overflow-x-auto max-h-96 custom-scroll font-mono leading-relaxed"></pre>
+      </div>
+    </div>
+  </main>
+
+  
+<dialog id="qa-modal" class="qa-modal"></dialog><input id="file-input" type="file" accept=".json,application/json" hidden>
+<script src="/static/i18n.js"></script>
+<script src="/static/app.js"></script>
+</body></html>

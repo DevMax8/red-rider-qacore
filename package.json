@@ -1,0 +1,7 @@
+{
+  "name": "red-rider-cqa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local Conversation Quality Analytics application",
+  "scripts": {"dev": "python scripts/dev.py", "test": "python -m unittest discover -s tests -v"}
+}
